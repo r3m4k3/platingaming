@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block breadcrumbs %}
+<ol class="breadcrumb">
+    <li><a href="#">Home</a></li>
+    <li><a href="">Your account</a></li>
+</ol>
+{% endblock %}
+
+{% block body %}
+  	<table class="table table-striped">
+  		<tr>
+        <th>Your username: </th>
+        <td>{{ app.user.username }}</td>
+      </tr>
+      <tr>
+        <th>Your e-mail address: </th>
+        <td>{{ app.user.email }}</td>
+      </tr>
+      <tr>
+        <th>Your role: </th>
+        <td>{{ get_roles(app.user)|join(', ') }}</td>
+      </tr>
+      <tr>
+        <th>Registration date:</th>
+        <td>{{ app.user.registrationDate|date('d-m-Y H:i:s') }}</td>
+      </tr>
+  	</table>
+  	<a href="{{ path('user_change_password') }}">
+      <button type="button" class="btn btn-success">Change password</button>
+    </a>
+{% endblock %}

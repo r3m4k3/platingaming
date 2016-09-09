@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>
+            {% block title %}
+                Platingaming
+            {% endblock %}
+        </title>
+        {% block stylesheets %}
+            {% stylesheets filter="scssphp" output="css/app.css"
+                "%kernel.root_dir%/Resources/assets/css/bootstrap-3.3.4.min.css"
+                "%kernel.root_dir%/Resources/assets/css/bootstrap-theme-3.3.4.min.css"
+                "%kernel.root_dir%/Resources/assets/scss/main.scss"
+            %}
+            <link rel="stylesheet" href="{{ asset_url }}" />
+            {% endstylesheets %}
+        {% endblock %}
+    </head>
+    <body>
+
+        <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">Dashboard</a>
+                </div>
+                <div class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="dropdown">
+                              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                {% if app.user is not empty %}
+                                    You're signed in as <strong>{{ app.user.username }}</strong> <span class="caret"></span></a>
+                                {% endif %}
+                              <ul class="dropdown-menu">
+                                <li><a href="{{ path('user_my_account') }}">Account details</a></li>
+                                <li><a href="{{ path('security_logout') }}">Logout</a></li>
+                              </ul>
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid">
+
+            <div class="row">
+                <div class="col-sm-3 col-md-2 sidebar">
+                    <ul class="nav nav-sidebar">
+                        <li id="my-tasks" class="{{ (app.request.uri == url('task_developer_list')) ? 'active' : '' }}"><a href="{{ path('task_developer_list') }}">My tasks</a></li>
+                        {% if is_manager() %}
+                            <li id="tasks" class="{{ (app.request.uri == url('task_manager_list')) ? 'active' : '' }}"><a href="{{ path('task_manager_list') }}">All tasks</a></li>
+                        {% endif %}
+                        <li id="statuses" class="{{ (app.request.uri == url('status_list')) ? 'active' : '' }}"><a href="{{ path('status_list') }}">Statuses</a></li>
+                        <li id="users" class="{{ (app.request.uri == url('user_list')) ? 'active' : '' }}"><a href="{{ path('user_list') }}">Users</a></li>
+                    </ul>
+
+                </div>
+                <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+
+                    {# breadcrumbsy #}
+                    {% block breadcrumbs %}
+                    <ol class="breadcrumb">
+                        <li><a href="#">Home</a></li>
+                    </ol>
+                    {% endblock %}
+
+                    {# flash messages #}
+
+                    <div class="container alerts">
+                    {% for type,messages in app.session.flashbag.all() %} 
+                        {% for msg in messages %}
+                            <div class="alert alert-{{ type }}">{{ msg|trans }}</div>
+                        {% endfor %}
+                    {% endfor %}
+                    </div>
+
+        {% block body %}
+             </div>
+        </div>
+    </div>
+
+        {% endblock %}
+        {% block javascripts %}
+            {% javascripts output="js/app.js"
+                "%kernel.root_dir%/Resources/assets/js/jquery-3.1.0.min.js"
+                "%kernel.root_dir%/Resources/assets/js/bootstrap-3.3.4.min.js"
+                "%kernel.root_dir%/Resources/assets/js/main.js"
+            %}
+             <script src="{{ asset_url }}"></script>
+            {% endjavascripts %}
+        {% endblock %}
+    </body>
+</html>

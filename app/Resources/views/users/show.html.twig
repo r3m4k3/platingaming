@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block breadcrumbs %}
+<ol class="breadcrumb">
+    <li><a href="#">Home</a></li>
+    <li><a href="{{ path('user_list') }}">Users list</a></li>
+    <li><a href="">{{ user.username }}</a></li>
+</ol>
+{% endblock %}
+
+{% block body %}
+    <h3>{{ user.username }}'s details</h3>
+  	<table class="table table-striped">
+  		<tr>
+        <th>User username: </th>
+        <td>{{ user.username }}</td>
+      </tr>
+      <tr>
+        <th>User e-mail address: </th>
+        <td>{{ user.email }}</td>
+      </tr>
+      <tr>
+        <th>User role: </th>
+        <td>
+          {{ get_roles(user)|join(', ') }}
+        </td>
+      </tr>
+      <tr>
+        <th>Registration date:</th>
+        <td>{{ user.registrationDate|date('d-m-Y H:i:s') }}</td>
+      </tr>
+  	</table>
+{% endblock %}

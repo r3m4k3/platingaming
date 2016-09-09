@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>
+            {% block title %}
+                Sign in
+            {% endblock %}
+        </title>
+        {% block stylesheets %}
+            {% stylesheets filter="scssphp" output="css/app.css"
+                "%kernel.root_dir%/Resources/assets/css/bootstrap-3.3.4.min.css"
+                "%kernel.root_dir%/Resources/assets/scss/signin.scss"
+            %}
+            <link rel="stylesheet" href="{{ asset_url }}" />
+            {% endstylesheets %}
+        {% endblock %}
+    </head>
+    <body>
+
+
+        <div class="container">
+            {% if error %}
+                <div class="alert alert-danger">{{ error.message|trans }}</div>
+            {% endif %}
+
+            <form method="post" action="{{ path('security_login_check') }}" class="form-signin" role="form" novalidate>
+                <h2 class="form-signin-heading">Please sign in</h2>
+                <input type="text" id="username" name="_username" value="{{ last_username }}" class="form-control" placeholder="Login or e-mail address" required autofocus>
+                <input type="password" id="password" name="_password" class="form-control" placeholder="Password" required>
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"/>
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+            </form>
+
+        </div> <!-- /container -->
+
+    </body>
+</html>

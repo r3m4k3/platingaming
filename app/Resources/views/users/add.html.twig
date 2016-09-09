@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block breadcrumbs %}
+<ol class="breadcrumb">
+    <li><a href="#">Home</a></li>
+    <li><a href="{{ path('user_list') }}">Users list</a></li>
+    <li><a href="">Add user</a></li>
+</ol>
+{% endblock %}
+
+{% block body %}
+    {% form_theme form 'form_theme.html.twig' %}
+    {{ form_start(form, {'attr':{'novalidate':'novalidate'}}) }}
+        {{ form_row(form.username) }}
+        {{ form_row(form.email) }}
+        {{ form_row(form.password) }}
+        {{ form_row(form.roles) }}
+        {{ form_row(form.enabled) }}
+        {{ form_row(form.reset) }}
+        {{ form_row(form.save) }}
+    {{ form_end(form) }}
+{% endblock %}

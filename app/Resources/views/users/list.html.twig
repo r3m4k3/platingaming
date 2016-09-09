@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block breadcrumbs %}
+<ol class="breadcrumb">
+    <li><a href="#">Home</a></li>
+    <li><a href="{{ path('user_my_account') }}">Users list</a></li>
+</ol>
+{% endblock %}
+
+{% block body %}
+  	<table class="table table-striped">
+  		<thead>
+  			<th>No</th>
+  			<th>Username</th>
+  			<th>E-mail address</th>
+        <th>Status</th>
+  			<th>Action</th>
+  		</thead>
+  		<tbody>
+  		{% for user in users %}
+  			<tr>
+  				<td>{{ loop.index }}</td>
+          <td><a href="{{ path('user_get', {'id': user.id }) }}">{{ user.username }}</a></td>
+          <td>{{ user.email }}</td>
+          <td>
+            {% if app.user.username != user.username %}
+              {% if user.isEnabled %}
+                <a href="{{ path('user_change_status', {'id': user.id, 'status': 0}) }}" data-toggle="tooltip" title="Click here to disable the user ">
+                  <span class="glyphicon glyphicon-ok"></span> enabled
+                </a>
+              {% else %}
+              <a href="{{ path('user_change_status', {'id': user.id, 'status': 1}) }}" data-toggle="tooltip" title="Click here to enable the user ">
+                <span class="glyphicon glyphicon-minus"></span> disabled
+              </a>
+              {% endif %}
+            {% else %}
+              ---
+            {% endif %}
+          </td>
+  				<td>
+            {% if is_manager() %}
+                {% if app.user.username != user.username %}
+        					<a href="{{ path('user_remove', {'id': user.id }) }}">
+        						<span class="glyphicon glyphicon-remove"></span>
+        					</a>
+                {% else %}
+                  ---
+                {% endif %}
+            {% else %}
+              ---
+            {% endif %}
+  				</td>
+  			</tr>
+  		{% endfor %}
+  		</tbody>
+  	</table>
+    {% if is_manager() %}
+    	<a href="{{ path('user_add') }}" class="btn btn-primary btn-sm">
+        <i class="glyphicon glyphicon-white glyphicon-plus"></i> Add user
+      </a>
+    {% endif %}
+{% endblock %}

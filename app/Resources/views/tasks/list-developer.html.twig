@@ -1,0 +1,71 @@
+{% extends 'base.html.twig' %}
+
+{% block breadcrumbs %}
+<ol class="breadcrumb">
+    <li><a href="#">Home</a></li>
+    <li><a href="">Your tasks list</a></li>
+</ol>
+{% endblock %}
+
+{% block body %}
+    <h3>Your tasks</h3>
+  	<table class="table table-striped">
+  		<thead>
+  			<th>No</th>
+  			<th>Title</th>
+        <th>Assignee</th>
+  			<th>Status</th>
+  			<th>Action</th>
+  		</thead>
+  		<tbody>
+  		{% for task in tasks %}
+  			<tr>
+  				<td>{{ loop.index }}</td>
+  				<td>
+  					<a href="{{ path('task_show', {'id': task.id }) }}">
+  						{{ task.title }}
+  					</a>
+  				</td>
+          <td>
+            <select class="assignee-select" data-task-id="{{ task.id }}" data-url="{{ url('task_change_assignee') }}">
+              <option disabled selected value> -- select an assignee -- </option>
+              {% for user in users %}
+                <option value="{{ user.id }}" {{ task.assignee is not null and task.assignee.username == user.username ? 'selected' : '' }}>{{ user.username }}</option>
+              {% endfor %}
+            </select>
+            <a href="{{ path('task_unassign', {'id': task.id}) }}" data-toggle="tooltip" title="Click here to unassign the task ">
+              <span class="glyphicon glyphicon-remove"></span>
+            </a>
+          </td>
+  				<td>
+            {% if task.status.name == 'NEW' %}
+              <span class="label label-danger">
+            {% elseif task.status.name == 'IN PROGRESS' %}
+              <span class="label label-warning">
+            {% elseif task.status.name == 'REVIEW' %}
+              <span class="label label-info">
+            {% elseif task.status.name == 'DONE' %}
+              <span class="label label-success">
+            {% else %}
+              <span class="label label-default">
+            {% endif %}
+                {{ task.status.name }}
+              </span>
+          </td>
+  				<td>
+  					<a href="{{ path('task_edit', {'id': task.id}) }}">
+  						<span class="glyphicon glyphicon-edit"></span>
+  					</a>
+  				</td>
+  			</tr>
+      {% else %}
+        <tr>
+          <td colspan="5">No records found</td>
+        </tr>
+  		{% endfor %}
+  		</tbody>
+  	</table>
+    <a href="{{ path('task_add') }}" class="btn btn-primary btn-sm">
+      <i class="glyphicon glyphicon-white glyphicon-plus"></i> Add task
+    </a>
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block breadcrumbs %}
+<ol class="breadcrumb">
+    <li><a href="#">Home</a></li>
+    <li><a href="">Statuses list</a></li>
+</ol>
+{% endblock %}
+
+{% block body %}
+  	<table class="table table-striped">
+  		<thead>
+  			<th>No</th>
+  			<th>Name</th>
+        <th>Is active</th>
+  			<th>Action</th>
+  		</thead>
+  		<tbody>
+  		{% for status in statuses %}
+  			<tr>
+  				<td>{{ loop.index }}</td>
+  				<td>{{ status.name }}</td>
+          <td>
+            {% if status.isActive %}
+              <span class="glyphicon glyphicon-ok"></span> active
+            {% else %}
+              <span class="glyphicon glyphicon-minus"></span> inactive
+            {% endif %}
+          </td>
+  				<td>
+  					<a href="{{ path('status_edit', {'id': status.id }) }}">
+  						<span class="glyphicon glyphicon-edit"></span>
+  					</a>
+  					<a href="{{ path('status_remove', {'id': status.id }) }}">
+  						<span class="glyphicon glyphicon-remove"></span>
+  					</a>
+  				</td>
+  			</tr>
+      {% else %}
+      <tr>
+        <td colspan="4">No records found.</td>
+      </tr>
+  		{% endfor %}
+  		</tbody>
+  	</table>
+  	<a href="{{ path('status_add') }}" class="btn btn-primary btn-sm">
+      <i class="glyphicon glyphicon-white glyphicon-plus"></i> Add status
+    </a>
+{% endblock %}

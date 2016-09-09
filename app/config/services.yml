@@ -1,0 +1,17 @@
+services:
+    # form.type.user:
+    #     class: AppBundle\Form\UserType
+    #     arguments: ["@security.token_storage"]
+    #     tags:
+    #         - { name: form.type, alias: user_type }
+    app.twig_extension:
+        class: AppBundle\Twig\TwigExtension
+        arguments: ["@security.token_storage"]
+        tags:
+            - { name: twig.extension }  
+    alert:
+        class: AppBundle\Service\NotificationService
+        arguments: ["@session"]
+    app.comment.manager:
+        class: AppBundle\Service\CommentManager
+        arguments: ["@service_container", "@security.token_storage", "@router", "@form.factory"]                      

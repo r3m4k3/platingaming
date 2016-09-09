@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block breadcrumbs %}
+<ol class="breadcrumb">
+    <li><a href="#">Home</a></li>
+    <li><a href="{{ path('task_list') }}">Tasks list</a></li>
+    <li><a href="">{{ task.title }}</a></li>
+</ol>
+{% endblock %}
+
+{% block body %}
+    <h3>Task details</h3>
+    <br/>
+  	<table class="table table-striped">
+      <tr>
+        <th>Title: </th>
+        <td>{{ task.title }}</td>
+      </tr>
+      <tr>
+        <th>Assignee: </th>
+        <td>
+          {% if task.assignee is not empty %}
+            {{ task.assignee.username }}
+          {% else %}
+            unassigned
+          {% endif %}
+        </td>
+      </tr>
+      <tr>
+        <th>Status: </th>
+        <td>{{ task.status.name }}</td>
+      </tr>
+      <tr>
+        <th>Created at: </th>
+        <td>{{ task.createdAt|date('d-m-Y H:i:s') }}</td>
+      </tr>
+      <tr>
+        <th>Author: </th>
+        <td>{{ task.author.username }}</td>
+      </tr>
+      <tr>
+        <th>Content: </th>
+        <td>{{ task.content }}</td>
+      </tr>
+  	</table>
+    <br/>
+    <h3>Comments:</h3>
+    {% for comment in comments %}
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          {{ comment.author.username }} @{{ comment.createdAt|date('d-m-Y H:i:s') }} 
+          {% if comment.author.username == app.user.username %}
+            | <a href="{{ path('comment_remove', {'id': comment.id }) }}">Remove</a>
+          {% endif %}
+        </div>
+        <div class="panel-body">
+          {{ comment.message }}
+        </div>
+      </div>
+    {% else %}
+      No comments, sorry<br/><br/>
+    {% endfor %}
+  	<a href="{{ path('comment_add', {'taskId': task.id }) }}">
+      <button type="button" class="btn btn-success">Add comment</button>
+    </a>
+{% endblock %}

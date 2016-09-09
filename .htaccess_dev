@@ -1,0 +1,17 @@
+DirectoryIndex app_dev.php
+<IfModule mod_rewrite.c>
+	RewriteEngine On
+	RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
+	RewriteRule ^(.*)$ http://%1/$1 [R=301,L]
+	RewriteCond %{REQUEST_FILENAME} -f
+	RewriteRule ^ - [L]
+	RewriteRule ^bundles/(.*)$ /web/bundles/$1 [L]
+	RewriteRule ^uploads/(.*)$ /web/uploads/$1 [L]
+	RewriteRule ^assetic/(.*)$ /web/assetic/$1 [L]
+	RewriteRule ^assets/(.*)$ /web/assets/$1 [L]
+	RewriteRule ^css/(.*)$ /web/css/$1 [L]
+	RewriteRule ^fonts/(.*)$ /web/fonts/$1 [L]
+	RewriteRule ^js/(.*)$ /web/js/$1 [L]
+	RewriteRule ^ %{ENV:BASE}/web/app_dev.php [L]
+</IfModule>
+
